@@ -1,16 +1,23 @@
 import { dbConnect } from "../route";
-import { dbConnect2 } from "../route";
 
 export async function GET(req) {
     const {client, collection} = await dbConnect("match_member");
-    const {client2, collection2} = await dbConnect2("new_match");
     const qData = await Object.fromEntries(req.nextUrl.searchParams);
 
     const data = await collection.find({sNum: qData.num}).toArray();
-    const modifydata = await collection2.updateOne({num: qData.num}, {$set: {mCount: data.length}});
-    const getdata = await collection2.find({num: qData.num}).toArray();
-    
+    const dataGet = await insert(qData, data.length);
+
     await client.close();
-    await client2.close();
-    return Response.json(getdata)
+    return Response.json(dataGet)
+}
+
+
+export async function insert(qData, lngth) {
+    const {client, collection} = await dbConnect("new_match");
+
+    await collection.updateOne({num: qData.num}, {$set: {mCount: lngth}});
+    const dataGet = await collection.find({num: qData.num}).toArray();
+
+    await client.close();
+    return (dataGet)
 }

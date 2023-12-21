@@ -28,7 +28,6 @@ export async function DELETE(req) {
     await collection.deleteMany({num: { $in: JSON.parse(num) }});
     const dataGet = await collection.find({id: id}).toArray();
 
-    console.log()
     await client.close();
     return Response.json(dataGet);
 }

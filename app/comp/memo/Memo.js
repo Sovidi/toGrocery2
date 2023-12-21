@@ -64,7 +64,7 @@ function Memo() {
 
   const clear_but = async () => {
     //삭제
-    memo.filter(item => item.ch).map(obj=>{l2Arr.push(obj.num)});
+    memo.filter(item => item.ch).map(obj => {l2Arr.push(obj.num)});
     const del = await axios.delete(`/api/memo?id=${id}&num=${JSON.stringify(l2Arr)}`);
     console.log(del)
     setmemo(del.data)
