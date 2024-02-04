@@ -84,6 +84,7 @@ function Context({children}) {
         script.async = true;
         script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${'98f60b92e740fcc09c63e1118a093970'}&libraries=services,clusterer&autoload=false`;
         document.head.appendChild(script);
+
         script.addEventListener('load', () => {
           window.kakao.maps.load(() => {
             const container = document.getElementById('map');
@@ -104,6 +105,10 @@ function Context({children}) {
             setMap(map); // setMap 함수를 사용하여 map 상태를 설정
           });
         });
+
+        return () => {
+          document.head.removeChild(script);
+        }
       }, [lat, lng, setMap, draggable, zoomable]);
     
       return <div id="map" style={{ width: '100%', height: '400px' }}></div>;
