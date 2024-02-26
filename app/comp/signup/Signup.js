@@ -10,6 +10,7 @@ function Signup() {
   const [massage, setMassage] = useState("");
   const [disabledValue, setDisabledValue] = useState();
   const router = useRouter();
+  const idInp = useRef();
 
   const [checkboxState, setCheckboxState] = useState({
     a: false,
@@ -33,15 +34,20 @@ function Signup() {
 
   const idchecking = async (e) => {
     // e.preventDefault();
-    await axios.get(`/api/idcheck?id=${e.target.value}`).then((res) => {
-      if (res.data) {
-        // console.log("사용불가")
-        setMassage("이미 존재하는 아이디입니다.");
+    await axios.get(`/api/idcheck?id=${idInp.current.value}`).then((res) => {
+      if(idInp.current.value == "") {
+        setMassage("아이디를 입력해주세요.");
         setWarning(false);
       } else {
-        // console.log("사용가능")
-        setMassage("");
-        setWarning(true);
+        if (res.data) {
+          // console.log("사용불가")
+          setMassage("이미 존재하는 아이디입니다.");
+          setWarning(false);
+        } else {
+          // console.log("사용가능")
+          setMassage("사용 가능합니다.");
+          setWarning(true);
+        }
       }
     });
   };
@@ -74,15 +80,16 @@ function Signup() {
           }}
         >
           <div className={styles.vv}>
+            <div className={styles.idBox}>
             <input
               required
-              onChange={(e) => {
-                idchecking(e);
-              }}
+              ref={idInp}
               type="text"
               placeholder="아이디"
               name="id"
             />
+            <button type="button" onClick={idchecking}>중복확인</button>
+            </div>
             <span className={styles.exists}>{massage}</span>
             <input required type="text" placeholder="닉네임" name="nickname" />
             <input required type="password" placeholder="비밀번호" />

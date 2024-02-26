@@ -41,6 +41,22 @@
 				flex-direction: column;
 				justify-content: space-between;
 				max-width: 480px;
+
+				>.idBox{
+					width: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
+					>input{
+						width: 70%;
+					}
+					>button{
+						width: 20%;
+						border-radius: 13px;
+						margin: 0 0 0 20px;
+						padding: 3%;
+					}
+				}
 	
 				input {
 					display: block;
